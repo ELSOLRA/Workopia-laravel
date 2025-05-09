@@ -19,6 +19,13 @@
             <x-top-banner />
         @endif
         <main class="container mx-auto mt-4 p-4">
+            {{-- Display alert msg --}}
+            @if (session('success'))
+                <x-alert type="success" message="{{ session('success') }}" />
+            @endif
+            @if (session('error'))
+                <x-alert type="error" message="{{ session('error') }}" />
+            @endif
             {{ $slot }}
         </main>
     </body>
