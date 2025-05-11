@@ -1,4 +1,4 @@
-<header class="bg-blue-900 p-4 text-white">
+<header class="bg-blue-900 p-4 text-white" x-data="{ open: false }">
     <div class="container mx-auto flex items-center justify-between">
         <h1 class="text-3xl font-semibold">
             <a href="{{ url('/') }}">Workopia</a>
@@ -16,12 +16,13 @@
             </x-button-link>
 
         </nav>
-        <button id="hamburger" class="flex items-center text-white md:hidden">
+        <button @click="open = !open" id="hamburger" class="flex items-center text-white md:hidden">
             <i class="fa fa-bars text-2xl"></i>
         </button>
     </div>
     <!-- Mobile Menu -->
-    <nav id="mobile-menu" class="mt-5 hidden space-y-2 bg-blue-900 pb-4 text-white md:hidden">
+    <nav x-show="open" @click.away="open = false" id="mobile-menu"
+        class="mt-5 space-y-2 bg-blue-900 pb-4 text-white md:hidden">
         <x-nav-link url="/jobs" :active="request()->is('jobs')" :mobile="true"> All Jobs </x-nav-link>
         <x-nav-link url="/jobs/saved" :active="request()->is('jobs/saved')" :mobile="true">Saved Jobs</x-nav-link>
         <x-nav-link url="/login" :active="request()->is('login')" :mobile="true">Login</x-nav-link>
