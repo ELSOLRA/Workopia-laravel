@@ -2,7 +2,9 @@
 
 <div class="rounded-lg bg-white p-4 shadow-md">
     <div class="space-between flex items-center gap-4">
-        <img src="/images/{{ $job->company_logo }}" alt="{{ $job->company_name }}" class="w-14" />
+        @if ($job->company_logo)
+            <img src="/storage/{{ $job->company_logo }}" alt="{{ $job->company_name }}" class="w-14" />
+        @endif
         <div>
             <h2 class="text-xl font-semibold">
                 {{ $job->title }}
@@ -23,9 +25,11 @@
                 <span class="ml-2 rounded-full bg-red-500 px-2 py-1 text-xs text-white">On-site</span>
             @endif
         </li>
-        <li class="mb-2">
-            <strong>Tags:</strong> {{ ucwords(str_replace(',', ', ', $job->tags)) }}
-        </li>
+        @if ($job->tags)
+            <li class="mb-2">
+                <strong>Tags:</strong> {{ ucwords(str_replace(',', ', ', $job->tags)) }}
+            </li>
+        @endif
     </ul>
     <a href="{{ route('jobs.show', $job->id) }}"
         class="block w-full rounded border bg-indigo-100 px-5 py-2.5 text-center text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-200">

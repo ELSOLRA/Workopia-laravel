@@ -66,8 +66,7 @@
             <x-inputs.text id="contact_email" name="contact_email" label="Contact Email"
                 placeholder="Enter Contact Email" type="email" />
 
-            <x-inputs.file id="company_logo" name="company_logo" label="Company Logo" placeholder="Enter Contact Email"
-                type="email" />
+            <x-inputs.file id="company_logo" name="company_logo" label="Company Logo" />
 
 
             <button type="submit"
