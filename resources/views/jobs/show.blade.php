@@ -9,7 +9,8 @@
                         Back To Listings
                     </a>
                     <div class="ml-4 flex space-x-3">
-                        <a href="/edit" class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Edit</a>
+                        <a href="{{ route('jobs.edit', $job->id) }}"
+                            class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Edit</a>
                         <!-- Delete Form -->
                         <form method="POST">
                             <button type="submit" class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
