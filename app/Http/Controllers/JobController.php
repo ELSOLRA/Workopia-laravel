@@ -92,7 +92,7 @@ class JobController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Job $job): string
+    public function update(Request $request, Job $job): RedirectResponse
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -136,8 +136,15 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): string
+    public function destroy(Job $job): RedirectResponse
     {
-        return 'Delete';
+        // I flogo, then delete it
+        if ($job->company_logo) {
+            Storage::delete('public/logos/' . $job->company_logo);
+        }
+
+        $job->delete();
+
+        return redirect()->route('jobs.index')->with('success', 'Job listing delete successfully');
     }
 }
