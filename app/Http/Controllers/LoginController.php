@@ -37,4 +37,17 @@ class LoginController extends Controller
             'email' => 'The provided credentials do not match our record'
         ])->onlyInput('email');
     }
+
+    // @desc logout user
+    // @route POST /logout
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        // Invalidate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
 }
