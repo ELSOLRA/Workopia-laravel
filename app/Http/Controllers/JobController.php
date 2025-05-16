@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,6 +23,7 @@ class JobController extends Controller
     // @route GET /jobs/create
     public function create(): View
     {
+
         return view('jobs.create');
     }
 

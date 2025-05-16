@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LogRequest;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -11,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->validateCsrfTokens(except: ['/submit']);   // ovedriving, to be able test /submit without csrf token
+        // ovedriving, to be able test /submit without csrf token
+        $middleware->validateCsrfTokens(except: ['/submit']);
+        /*         $middleware->append(LogRequest::class); */ //middleware globalt
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

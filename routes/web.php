@@ -9,7 +9,12 @@ use App\Http\Controllers\RegisterController;
 /* use Illuminate\Http\Request; */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::resource('jobs', JobController::class);
+
+// Route::resource('jobs', JobController::class);
+Route::resource('jobs', JobController::class)->middleware('auth')->only(['create', 'edit', 'update', 'destroy']);
+
+Route::resource('jobs', JobController::class)->except(['create', 'edit', 'update', 'destroy']);
+
 
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
