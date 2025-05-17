@@ -55,7 +55,7 @@ class JobController extends Controller
         ]);
 
         //Hardcoded user Id part
-        $validatedData['user_id'] = 1;
+        $validatedData['user_id'] = auth()->user()->id;
 
         // Check for image
         if ($request->hasFile('company_logo')) {

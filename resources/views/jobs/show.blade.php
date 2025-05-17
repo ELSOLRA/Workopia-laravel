@@ -8,20 +8,24 @@
                         <i class="fa fa-arrow-alt-circle-left"></i>
                         Back To Listings
                     </a>
-                    <div class="ml-4 flex space-x-3">
-                        <a href="{{ route('jobs.edit', $job->id) }}"
-                            class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Edit</a>
-                        <!-- Delete Form -->
-                        <form method="POST" action="{{ route('jobs.destroy', $job->id) }}"
-                            onsubmit="return confirm('Are you sure to delete this Job?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
-                                Delete
-                            </button>
-                        </form>
-                        <!-- End Delete Form -->
-                    </div>
+                    @auth
+                        @if (auth()->user()->id == $job->user_id)
+                            <div class="ml-4 flex space-x-3">
+                                <a href="{{ route('jobs.edit', $job->id) }}"
+                                    class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Edit</a>
+                                <!-- Delete Form -->
+                                <form method="POST" action="{{ route('jobs.destroy', $job->id) }}"
+                                    onsubmit="return confirm('Are you sure to delete this Job?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+                                        Delete
+                                    </button>
+                                </form>
+                                <!-- End Delete Form -->
+                            </div>
+                        @endif
+                    @endauth
                 </div>
                 <div class="p-4">
                     <h2 class="text-xl font-semibold">
