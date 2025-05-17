@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,8 @@ class JobController extends Controller
     // @route GET /jobs/{$id}/edit
     public function edit(Job $job): View
     {
+        // check if user is authorized
+        $this->authorize('update', $job);
         return view('jobs.edit')->with('job', $job);
     }
 
@@ -90,6 +93,8 @@ class JobController extends Controller
     // @route PUT /jobs/{$id}
     public function update(Request $request, Job $job): RedirectResponse
     {
+        // check if user is authorized
+        $this->authorize('update', $job);
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -133,6 +138,8 @@ class JobController extends Controller
     // @route DELETE /jobs/{$id}
     public function destroy(Job $job): RedirectResponse
     {
+        // check if user is authorized
+        $this->authorize('delete', $job);
         // I flogo, then delete it
         if ($job->company_logo) {
             Storage::delete('public/logos/' . $job->company_logo);
