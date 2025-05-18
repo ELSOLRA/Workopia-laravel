@@ -5,6 +5,14 @@
             <h3 class="mb-4 text-center text-3xl font-bold">
                 Profile info
             </h3>
+
+            @if ($user->avatar)
+                <div class="mt-2 flex justify-center">
+                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}"
+                        class="h-26 w-26 rounded-full object-cover">
+                </div>
+            @endif
+
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -12,6 +20,8 @@
                 <x-inputs.text id="name" name="name" label="Name" value="{{ $user->name }}" />
                 <x-inputs.text id="email" name="email" label="Email" type="email"
                     value="{{ $user->email }}" />
+
+                <x-inputs.file id="avatar" name="avatar" label="Upload avatar" />
 
                 <button type="submit"
                     class="border-rounded w-full bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none">Save</button>
