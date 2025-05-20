@@ -103,10 +103,22 @@
             @if ($job->company_website)
                 <a href="{{ $job->company_website }}" target="_blank" class="text-blue-500">Visit Website</a>
             @endif
-            <a href=""
-                class="mt-10 flex w-full items-center justify-center rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600"><i
-                    class="fas fa-bookmark mr-3"></i> Bookmark
-                Listing</a>
+
+            {{-- Bookmark buttpon --}}
+            @guest
+                <p class="mt-10 w-full rounded-full bg-gray-200 px-4 py-2 text-center font-bold text-gray-700">
+                    <i class="fas fa-info-circle mr-3"></i> You must be logged in to bookmark a job
+                </p>
+            @else
+                <form method="POST" action="{{ route('bookmarks.store', $job->id) }}" class="mt-10">
+                    @csrf
+                    <button
+                        class="flex w-full items-center justify-center rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600">
+                        <i class="fas fa-bookmark mr-3"></i> Bookmark Listing
+                    </button>
+                </form>
+            @endguest
+
         </aside>
 
     </div>
