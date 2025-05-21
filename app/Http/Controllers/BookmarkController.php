@@ -20,20 +20,27 @@ class BookmarkController extends Controller
 
         return view('jobs.bookmarked')->with('bookmarks', $bookmarks);
     }
-    // @desc created new bookmarked job
+    // @desc created or remove new bookmarked job
     // @route POST /bookmarks/{job}
     public function store(Job $job): RedirectResponse
     {
         $user = Auth::user();
 
-        // check if job is already bookmarked
+
+        // Toggle the bookmark 
+        $user->bookmarkedJobs()->toggle($job->id);
+        // Check if it was added or removed to set appropriate message 
+        $bookmarked = $user->bookmarkedJobs()->where('job_id', $job->id)->exists();
+        $message = $bookmarked ? 'Job bookmarked successfully!' : 'Bookmark removed successfully!';
+        return back()->with('success', $message);
+
+        /*                 // check if job is already bookmarked
         if ($user->bookmarkedJobs()->where('job_id', $job->id)->exists()) {
             return back()->with('status', 'Job is already bookmarked');
-        }
-
-        // create new bookmark
+        } 
+                 // create new bookmark
         $user->bookmarkedJobs()->attach($job->id);
 
-        return back()->with('success', 'Job bookmarked successfully!');
+        return back()->with('success', 'Job bookmarked successfully!'); */
     }
 }

@@ -77,7 +77,14 @@ class JobController extends Controller
     // @route GET /jobs/{$id}
     public function show(Job $job): View
     {
-        return view('jobs.show')->with('job', $job);
+        $bookmarked = false;
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            $bookmarked = $user->bookmarkedJobs()->where('job_id', $job->id)->exists();
+        }
+
+        return view('jobs.show', compact('job', 'bookmarked'));
     }
 
     // @desc show edit job form
