@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\ApplicantController;
 
 /* use Illuminate\Http\Request; */
 
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks/{job}', [BookmarkController::class, 'store'])->name('bookmarks.store');
+
+    Route::post('/jobs/{job}/apply', [ApplicantController::class, 'store'])->name('applicant.store');
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
