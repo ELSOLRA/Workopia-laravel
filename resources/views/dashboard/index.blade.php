@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 {{-- Applicants --}}
-                <div class="mt-4">
+                <div class="mt-4 rounded-md bg-gray-100 p-2">
                     <h4 class="mb-2 text-lg font-semibold">Applicants</h4>
                     @forelse ($job->applicants as $applicant)
                         <div class="py-2">
@@ -69,16 +69,25 @@
                             <p class="text-gray-800">
                                 <strong>Message: </strong>{{ $applicant->message }}
                             </p>
-                            <p class="my-4 text-gray-800">
+                            <p class="mt-2 text-gray-800">
                                 <a href="{{ asset('storage/' . $applicant->resume_path) }}"
-                                    class="font-semibold text-blue-500 hover:underline" download>
+                                    class="text-sm font-semibold text-blue-500 hover:underline" download>
                                     <i class="fa fa-download"></i> Download Resume
                                 </a>
                             </p>
+                            {{-- Delete applicant --}}
+                            <form action="{{ route('applicant.destroy', $applicant->id) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this applicant?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-sm font-semibold text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash"></i> Delete Applicant
+                                </button>
+                            </form>
                         </div>
 
                     @empty
-                        <p class="text-gray-700">No applicants for this job</p>
+                        <p class="mb-6 text-gray-700">No applicants for this job</p>
                     @endforelse
                 </div>
 
