@@ -4,6 +4,13 @@
         <x-search />
     </div>
 
+    {{-- Back button --}}
+    @if (request()->has('keywords') || request()->has('location'))
+        <a href="{{ route('jobs.index') }}"
+            class="mb-4 inline-block rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-600">
+            <i class="fa fa-arrow-left mr-1"></i> Back
+        </a>
+    @endif
 
     <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
 
