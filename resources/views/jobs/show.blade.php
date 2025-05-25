@@ -94,10 +94,11 @@
                                 <form method="POST" action="{{ route('applicant.store', $job->id) }}"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <x-inputs.text id="full_name" name="full_name" label="Full_name" :required="true" />
+                                    <x-inputs.text id="full_name" name="full_name" label="Full_name"
+                                        value="{{ auth()->user()->name }}" :required="true" />
                                     <x-inputs.text id="contact_phone" name="contact_phone" label="Contact Phone" />
                                     <x-inputs.text id="contact_email" name="contact_email" label="Contact Email"
-                                        :required="true" />
+                                        value="{{ auth()->user()->email }}" :required="true" />
                                     <x-inputs.text-area id="message" name="message" label="Message" />
                                     <x-inputs.text id="location" name="location" label="Location" />
                                     <x-inputs.file id="resume" name="resume" label="Upload Resume (.pdf)"
