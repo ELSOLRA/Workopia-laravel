@@ -13,6 +13,8 @@ use App\Http\Controllers\ApplicantController;
 /* use Illuminate\Http\Request; */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/jobs/search', [JobController::class, 'search'])->name('jobs.search');
+
 
 // Route::resource('jobs', JobController::class);
 // Route::resource('jobs', JobController::class)->middleware('auth')->only(['create', 'edit', 'update', 'destroy']);
