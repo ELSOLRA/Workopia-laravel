@@ -69,9 +69,10 @@
                             <p class="text-gray-800">
                                 <strong>Message: </strong>{{ $applicant->message }}
                             </p>
-                            <p class="mt-2 text-gray-800">
+                            <p class="mb-3 mt-2 text-gray-800">
                                 <a href="{{ asset('storage/' . $applicant->resume_path) }}"
-                                    class="text-sm font-semibold text-blue-500 hover:underline" download>
+                                    class="rounded-md bg-gray-300 px-2 py-2 text-sm font-semibold text-blue-500 hover:bg-gray-200 hover:underline"
+                                    download>
                                     <i class="fa fa-download"></i> Download Resume
                                 </a>
                             </p>
@@ -80,7 +81,8 @@
                                 onsubmit="return confirm('Are you sure you want to delete this applicant?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-sm font-semibold text-red-500 hover:text-red-700">
+                                <button type="submit"
+                                    class="rounded-md bg-gray-300 px-2 py-2 text-sm font-semibold text-red-500 hover:bg-gray-200 hover:text-red-700">
                                     <i class="fas fa-trash"></i> Delete Applicant
                                 </button>
                             </form>
