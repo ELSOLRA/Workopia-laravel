@@ -15,12 +15,11 @@ use App\Http\Controllers\GeocodeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jobs/search', [JobController::class, 'search'])->name('jobs.search');
-
+Route::resource('jobs', JobController::class)->middleware('auth')->only(['create', 'edit', 'update', 'destroy']);
+Route::resource('jobs', JobController::class)->except(['create', 'edit', 'update', 'destroy']);
 
 // Route::resource('jobs', JobController::class);
 // Route::resource('jobs', JobController::class)->middleware('auth')->only(['create', 'edit', 'update', 'destroy']);
-
-Route::resource('jobs', JobController::class)->except(['create', 'edit', 'update', 'destroy']);
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'register'])->name('register');
@@ -31,8 +30,6 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    // Resource routes with restrictions
-    Route::resource('jobs', JobController::class)->only(['create', 'edit', 'update', 'destroy']);
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
