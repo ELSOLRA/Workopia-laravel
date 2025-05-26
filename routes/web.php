@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\GeocodeController;
 
 /* use Illuminate\Http\Request; */
 
@@ -27,6 +28,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
 });
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::middleware('auth')->group(function () {
     // Resource routes with restrictions
     Route::resource('jobs', JobController::class)->only(['create', 'edit', 'update', 'destroy']);
@@ -40,4 +43,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicant.destroy');
 });
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/geocode', [GeocodeController::class, 'geocode']);
