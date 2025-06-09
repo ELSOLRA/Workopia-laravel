@@ -47,6 +47,9 @@
 
             <x-inputs.text id="zipcode" name="zipcode" label="ZIP Code" placeholder="12201" />
 
+            <x-inputs.text id="application_limit" name="application_limit" label="Application Limit" type="number"
+                placeholder="50" value="{{ old('application_limit', 50) }}" required="true" />
+
             <h2 class="mb-6 text-center text-2xl font-bold text-gray-500">
                 Company Info
             </h2>

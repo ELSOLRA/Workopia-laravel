@@ -74,46 +74,65 @@
                 @endif
 
                 @auth
-                    <p class="my-5">
-                        Put "Job Application" as the subject of your email
-                        and attach your resume.
-                    </p>
+                    <!-- Application count -->
+                    <div class="mb-4 mt-6">
+                        <p class="text-sm text-gray-600">
+                            Applications: {{ $job->getApplicationCount() }} / {{ $job->application_limit }}
+                            @if ($job->canAcceptApplications())
+                                <span class="text-green-600">({{ $job->getRemainingApplicationSlots() }} slots
+                                    remaining)</span>
+                            @else
+                                <span class="text-red-600">(Application limit reached)</span>
+                            @endif
+                        </p>
+                    </div>
+                    <!-- Can apply -->
+                    @if ($job->canAcceptApplications())
+                        <p class="my-5">
+                            Put "Job Application" as the subject of your email
+                            and attach your resume.
+                        </p>
 
-                    <div x-data="{ open: false }" id="applicant-form">
-                        <button @click="open = true"
-                            class="block w-full cursor-pointer rounded border bg-indigo-100 px-5 py-2.5 text-center text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-200">
-                            Apply Now
-                        </button>
+                        <div x-data="{ open: false }" id="applicant-form">
+                            <button @click="open = true"
+                                class="block w-full cursor-pointer rounded border bg-indigo-100 px-5 py-2.5 text-center text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-200">
+                                Apply Now
+                            </button>
 
-                        <div x-cloak x-show="open"
-                            class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                            <div @click.away="open = false" class="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
-                                <h3 class="mb-4 text-lg font-semibold">
-                                    Apply for {{ $job->title }}
-                                </h3>
-                                <form method="POST" action="{{ route('applicant.store', $job->id) }}"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <x-inputs.text id="full_name" name="full_name" label="Full_name"
-                                        value="{{ auth()->user()->name }}" :required="true" />
-                                    <x-inputs.text id="contact_phone" name="contact_phone" label="Contact Phone" />
-                                    <x-inputs.text id="contact_email" name="contact_email" label="Contact Email"
-                                        value="{{ auth()->user()->email }}" :required="true" />
-                                    <x-inputs.text-area id="message" name="message" label="Message" />
-                                    <x-inputs.text id="location" name="location" label="Location" />
-                                    <x-inputs.file id="resume" name="resume" label="Upload Resume (.pdf)"
-                                        :required="true" />
-                                    <button type="submit"
-                                        class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Submit
-                                        Application</button>
-                                    <button @click="open = false"
-                                        class="rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400">Cancel
-                                    </button>
+                            <div x-cloak x-show="open"
+                                class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                                <div @click.away="open = false" class="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
+                                    <h3 class="mb-4 text-lg font-semibold">
+                                        Apply for {{ $job->title }}
+                                    </h3>
+                                    <form method="POST" action="{{ route('applicant.store', $job->id) }}"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <x-inputs.text id="full_name" name="full_name" label="Full_name"
+                                            value="{{ auth()->user()->name }}" :required="true" />
+                                        <x-inputs.text id="contact_phone" name="contact_phone" label="Contact Phone" />
+                                        <x-inputs.text id="contact_email" name="contact_email" label="Contact Email"
+                                            value="{{ auth()->user()->email }}" :required="true" />
+                                        <x-inputs.text-area id="message" name="message" label="Message" />
+                                        <x-inputs.text id="location" name="location" label="Location" />
+                                        <x-inputs.file id="resume" name="resume" label="Upload Resume (.pdf)"
+                                            :required="true" />
+                                        <button type="submit"
+                                            class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Submit
+                                            Application</button>
+                                        <button @click="open = false"
+                                            class="rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400">Cancel
+                                        </button>
 
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+                            This job is no longer accepting applications.
+                        </div>
+                    @endif
                 @else
                     <p class="my-5 rounded-md bg-gray-300 p-3 font-semibold">
                         <i class="fas fa-info-circle mr-3"></i>

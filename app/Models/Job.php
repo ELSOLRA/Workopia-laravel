@@ -34,7 +34,8 @@ class Job extends Model
         'company_description',
         'company_logo',
         'company_website',
-        'user_id'
+        'user_id',
+        'application_limit'
     ];
 
     // Relation to user
@@ -53,5 +54,21 @@ class Job extends Model
     public function applicants(): HasMany
     {
         return $this->hasMany(Applicant::class);
+    }
+
+    // Helper methods for applications
+    public function canAcceptApplications(): bool
+    {
+        return $this->applicants()->count() < $this->application_limit;
+    }
+
+    public function getRemainingApplicationSlots(): int
+    {
+        return max(0, $this->application_limit - $this->applicants()->count());
+    }
+
+    public function getApplicationCount(): int
+    {
+        return $this->applicants()->count();
     }
 }

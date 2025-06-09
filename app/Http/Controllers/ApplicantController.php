@@ -7,6 +7,7 @@ use App\Models\Applicant;
 use App\Models\Job;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ApplicantController extends Controller
@@ -25,6 +26,10 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'You have already applied to this job');
         }
 
+        if (!$job->canAcceptApplications()) {
+            return redirect()->back()->with('error', "This job has reached the maximum number of applications ({$job->application_limit})");
+        }
+
         // validate data
         $validatedData = $request->validate([
             'full_name' => 'required|string',
@@ -35,25 +40,39 @@ class ApplicantController extends Controller
             'resume' => 'required|file|mimes:pdf|max:2048',
         ]);
 
-        // handle resume upload
-        if ($request->hasFile('resume')) {
-            $path = $request->file('resume')->store('resumes', 'public');
-            \Log::info('Resume uploaded, public url: ', [
-                'url' => asset('storage/' . $path),
-            ]);
-            $validatedData['resume_path'] = $path;
+        try {
+            DB::transaction(function () use ($validatedData, $request, $job) {
+
+                // lock to prevent race conditions
+                $applicationCount = Applicant::where('job_id', $job->id)->lockForUpdate()->count();
+
+                if ($applicationCount >= $job->application_limit) {
+                    throw new \Exception("This job has reached the maximum number of applications ({$job->application_limit})");
+                }
+
+                // handle resume upload
+                if ($request->hasFile('resume')) {
+                    $path = $request->file('resume')->store('resumes', 'public');
+                    \Log::info('Resume uploaded, public url: ', [
+                        'url' => asset('storage/' . $path),
+                    ]);
+                    $validatedData['resume_path'] = $path;
+                }
+
+                // store the application
+                $application = new Applicant($validatedData);
+                $application->job_id = $job->id;
+                $application->user_id = auth()->id();
+                $application->save();
+
+                // send email to owner
+                //Mail::to($job->user->email)->send(new JobApplied($application, $job));
+            });
+
+            return redirect()->back()->with('success', 'Your application has been submitted');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        // store the application
-        $application = new Applicant($validatedData);
-        $application->job_id = $job->id;
-        $application->user_id = auth()->id();
-        $application->save();
-
-        // send email to owner
-        // Mail::to($job->user->email)->send(new JobApplied($application, $job));
-
-        return redirect()->back()->with('success', 'Your application has been submitted');
     }
 
     //  @desc delete job applicant

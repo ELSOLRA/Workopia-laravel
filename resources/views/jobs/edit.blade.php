@@ -50,6 +50,9 @@
 
             <x-inputs.text id="zipcode" name="zipcode" label="ZIP Code" placeholder="12201" :value="old('zipcode', $job->zipcode)" />
 
+            <x-inputs.text id="application_limit" name="application_limit" label="Application Limit" type="number"
+                placeholder="50" :value="old('application_limit', $job->application_limit)" required="true" />
+
             <h2 class="mb-6 text-center text-2xl font-bold text-gray-500">
                 Company Info
             </h2>
@@ -70,7 +73,6 @@
                 placeholder="Enter Contact Email" type="email" :value="old('contact_email', $job->contact_email)" />
 
             <x-inputs.file id="company_logo" name="company_logo" label="Company Logo" />
-
 
             <button type="submit"
                 class="my-3 w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none">
