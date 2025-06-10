@@ -44,7 +44,8 @@ class ApplicantController extends Controller
             DB::transaction(function () use ($validatedData, $request, $job) {
 
                 // lock to prevent race conditions
-                $applicationCount = Applicant::where('job_id', $job->id)->lockForUpdate()->count();
+                $applicants = Applicant::where('job_id', $job->id)->lockForUpdate()->get();
+                $applicationCount = $applicants->count();
 
                 if ($applicationCount >= $job->application_limit) {
                     throw new \Exception("This job has reached the maximum number of applications ({$job->application_limit})");
@@ -66,7 +67,7 @@ class ApplicantController extends Controller
                 $application->save();
 
                 // send email to owner
-                //Mail::to($job->user->email)->send(new JobApplied($application, $job));
+                Mail::to($job->user->email)->send(new JobApplied($application, $job));
             });
 
             return redirect()->back()->with('success', 'Your application has been submitted');
