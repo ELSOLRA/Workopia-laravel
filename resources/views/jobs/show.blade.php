@@ -76,15 +76,17 @@
                 @auth
                     <!-- Application count -->
                     <div class="mb-4 mt-6">
-                        <p class="text-sm text-gray-600">
-                            Applications: {{ $job->getApplicationCount() }} / {{ $job->application_limit }}
-                            @if ($job->canAcceptApplications())
-                                <span class="text-green-600">({{ $job->getRemainingApplicationSlots() }} slots
-                                    remaining)</span>
-                            @else
-                                <span class="text-red-600">(Application limit reached)</span>
-                            @endif
-                        </p>
+                        <div class="rounded-lg bg-white p-4 shadow-md">
+                            <p class="text-base text-gray-600">
+                                Applications: {{ $job->getApplicationCount() }} / {{ $job->application_limit }}
+                                @if ($job->canAcceptApplications())
+                                    <span class="text-green-600">({{ $job->getRemainingApplicationSlots() }} slots
+                                        remaining)</span>
+                                @else
+                                    <span class="text-red-600">(Application limit reached)</span>
+                                @endif
+                            </p>
+                        </div>
                     </div>
                     <!-- Can apply -->
                     @if ($job->canAcceptApplications())

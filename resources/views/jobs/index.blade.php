@@ -1,6 +1,6 @@
 <x-layout>
 
-    <div class="mb-4 flex h-24 items-center justify-center rounded bg-blue-900 px-4">
+    <div class="mb-10 mt-2 flex h-24 items-center justify-center rounded bg-blue-900 px-4 md:mb-4 md:mt-0">
         <x-search />
     </div>
 
