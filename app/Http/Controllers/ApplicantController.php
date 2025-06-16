@@ -17,6 +17,10 @@ class ApplicantController extends Controller
 
     public function store(Request $request, Job $job): RedirectResponse
     {
+        // prevents users from applying to their own jobs
+        if ($job->user_id === auth()->id()) {
+            return redirect()->back()->with('error', 'You cannot apply to your own job listing');
+        }
         // check if the user has already applied
         $existingApplication = Applicant::where('job_id', $job->id)
             ->where('user_id', auth()->id())

@@ -40,7 +40,7 @@
                         <div class="text-center">
                             <p class="text-sm font-semibold text-gray-600">System Jobs</p>
                             <p class="text-2xl font-bold">
-                                <span class="{{ \App\Models\Job::count() >= 28 ? 'text-red-500' : 'text-blue-600' }}">
+                                <span class="{{ \App\Models\Job::count() >= 25 ? 'text-red-500' : 'text-blue-600' }}">
                                     {{ \App\Models\Job::count() }}
                                 </span>
                                 <span class="text-blue-600"> / 30</span>
