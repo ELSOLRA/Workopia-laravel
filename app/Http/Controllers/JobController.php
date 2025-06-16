@@ -32,6 +32,17 @@ class JobController extends Controller
     // @route POST /jobs
     public function store(Request $request): RedirectResponse
     {
+
+        $totalJobs = Job::count();
+        if ($totalJobs >= 30) {
+            return redirect()->back()->with('error', 'Maximum number of jobs (30) has been reached. No new jobs can be created.');
+        }
+
+        $userJobs = Job::where('user_id', auth()->id())->count();
+        if ($userJobs >= 10) {
+            return redirect()->back()->with('error', 'You have reached your maximum limit of 10 job postings.');
+        }
+
         /*         $title = $request->input('title');
         $description = $request->input('description'); */
         $validatedData = $request->validate([

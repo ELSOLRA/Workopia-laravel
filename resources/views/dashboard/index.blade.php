@@ -32,6 +32,60 @@
             <h3 class="mb-4 text-center text-3xl font-bold">
                 My Job Listings
             </h3>
+            <div class="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {{-- System Jobs --}}
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-briefcase mr-3 text-xl text-blue-500"></i>
+                        <div class="text-center">
+                            <p class="text-sm font-semibold text-gray-600">System Jobs</p>
+                            <p class="text-2xl font-bold">
+                                <span class="{{ \App\Models\Job::count() >= 28 ? 'text-red-500' : 'text-blue-600' }}">
+                                    {{ \App\Models\Job::count() }}
+                                </span>
+                                <span class="text-blue-600"> / 30</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Your Jobs --}}
+                    <div class="flex items-center justify-center">
+                        <i
+                            class="fas fa-user-tie {{ auth()->user()->jobListings()->count() >= 0 ? 'text-red-500' : 'text-green-500' }} mr-3 text-xl"></i>
+                        <div class="text-center">
+                            <p class="text-sm font-semibold text-gray-600">Your Jobs</p>
+                            <p class="text-2xl font-bold">
+                                <span
+                                    class="{{ auth()->user()->jobListings()->count() >= 8 ? 'text-red-500' : 'text-green-500' }}">
+                                    {{ auth()->user()->jobListings()->count() }}
+                                </span>
+                                <span class="text-green-500"> / 10</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Warning messages --}}
+                @if (auth()->user()->jobListings()->count() >= 8 || \App\Models\Job::count() >= 25)
+                    <div class="mt-4 space-y-2 text-center">
+                        @if (auth()->user()->jobListings()->count() >= 8)
+                            <p class="text-sm text-red-600">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                Approaching your limit ({{ 10 - auth()->user()->jobListings()->count() }} job slots
+                                remaining)
+                            </p>
+                        @endif
+
+                        @if (\App\Models\Job::count() >= 25)
+                            <p class="text-sm text-red-600">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                System approaching limit ({{ 30 - \App\Models\Job::count() }} total job slots
+                                remaining)
+                            </p>
+                        @endif
+                    </div>
+                @endif
+            </div>
             @forelse($jobs as $job)
                 <div class="flex items-center justify-between border-b-2 border-gray-200 py-2">
                     <div>

@@ -4,6 +4,23 @@
         <h2 class="mb-4 text-center text-4xl font-bold">
             Create Job Listing
         </h2>
+
+        {{-- Jobs limit per auth user --}}
+        @if (auth()->user()->jobListings()->count() >= 8)
+            <div class="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+                <div class="text-center">
+                    <p class="text-sm text-gray-700">
+                        <strong>Your Jobs:</strong> {{ auth()->user()->jobListings()->count() }} / 10
+                    </p>
+                    <p class="mt-1 text-sm text-red-600">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> You're approaching your limit
+                        ({{ 10 - auth()->user()->jobListings()->count() }} jobs
+                        remaining)
+                    </p>
+                </div>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('jobs.store') }}" enctype="multipart/form-data">
             @csrf
             <h2 class="mb-6 text-center text-2xl font-bold text-gray-500">
