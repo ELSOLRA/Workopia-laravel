@@ -26,6 +26,9 @@ class BookmarkController extends Controller
     {
         $user = Auth::user();
 
+        if ($job->user_id === auth()->id()) {
+            return redirect()->back()->with('error', 'You cannot bookmark your own job listing');
+        }
 
         // Toggle the bookmark 
         $user->bookmarkedJobs()->toggle($job->id);
